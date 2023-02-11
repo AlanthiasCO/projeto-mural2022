@@ -1,61 +1,73 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.ufpr.mural.core;
+
+package br.ufpr.mural.core.usuario;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufpr.mural.core.mural.Evento;
+import br.ufpr.mural.core.mural.Post;
+
 public class Usuario {
-    
-    private int id;
-    private String userName;  // identificador
-    private List<Post> postsSalvos;
-    
-    private static int ultimoId = 0;
 
-    private synchronized static void incrementaId() {
-        ultimoId++;
-    }
-
+	private static int idUltimoUser = 0;
+	private int idUsuario;
+	private List<Post> postSalvos;
+	private List<Evento> eventosConfirmados;
+	private String userName; // identificador
+	
+	
+	private static synchronized void incrementarIdUltimo() {
+		idUltimoUser++;
+	}
+	
     public synchronized static void resetaIds() {
-        ultimoId = 0;
+    	idUltimoUser = 0;
     }
+	
+	public Usuario(String userName) {
+		incrementarIdUltimo();
+		this.idUsuario = idUltimoUser;
+		this.userName = userName;
+		this.postSalvos = new ArrayList<>();
+		this.eventosConfirmados = new ArrayList<>();
+	}
 
-
-    public Usuario(String userName) {
-        incrementaId();
-        this.id = ultimoId;
-        this.userName = userName;
-        this.postsSalvos = new ArrayList<>();
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-    
+	/*METODOS: USUARIO*/
+	public String getUserName() {
+		return userName;
+	}
+	public int getId() {
+		return this.idUsuario;
+	}
+	public boolean isAdmin() {
+		return this.userName.equals("admin");
+	}
+	
+	/*METODOS: POSTS SALVOS*/
     public List<Post> getPostsSalvos() {
-		return postsSalvos;
+		return postSalvos;
 	}
     
-    public void salvarPost(Post post) {
-    	this.postsSalvos.add(post);
+    public void salvarPost(Post idPost) {
+    	this.postSalvos.add(idPost);
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    
+    public void excluirPostSalvo(Post post) {
+        this.postSalvos.remove(post);
     }
 
     
+    /*METODOS: EVENTOS CONFIRMADOS*/
+    public void addEventoConfirmado(Evento idPost) {
+		this.eventosConfirmados.add(idPost);
+	}
     
-    
-    
-    
-    
+    public List<Evento> getEventosConfirmados(){
+    	return eventosConfirmados;
+    }
+
+	@Override
+	public String toString() {
+		return this.userName;
+	}
 }
