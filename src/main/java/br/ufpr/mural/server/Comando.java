@@ -6,7 +6,7 @@ public enum Comando {
 	CRIAR_USUARIO("criar-usuario"), CRIAR_MURAL("criar-mural"),
 	LOGIN("login"), LOGOUT("logout"),
 	POSTAR_ANUNCIO("postar-anuncio"), POSTAR_EVENTO("postar-evento"), 
-	LISTAR_MURAIS("listar-murais")
+	LISTAR_MURAIS("listar-murais"),
 	USAR_MURAL("usar-mural"), POSTAR("postar"), 
 	LISTAR_POSTS("listar-posts"),
 	EXCLUIR_POST("excluir-post"), SALVAR_POST("salvar-post"),

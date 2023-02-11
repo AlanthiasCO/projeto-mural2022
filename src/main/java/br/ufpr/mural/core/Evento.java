@@ -1,11 +1,11 @@
-package br.ufpr.mural.core.mural;
+package br.ufpr.mural.core;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Evento {
+public class Evento extends Post {
 
 	private String local;
 	private LocalDateTime data;
@@ -49,4 +49,4 @@ public class Evento {
 	}
 }
 
-}
+

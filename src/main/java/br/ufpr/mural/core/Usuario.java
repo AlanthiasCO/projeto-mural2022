@@ -1,11 +1,11 @@
 
-package br.ufpr.mural.core.usuario;
+package br.ufpr.mural.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufpr.mural.core.mural.Evento;
-import br.ufpr.mural.core.mural.Post;
+import br.ufpr.mural.core.Evento;
+import br.ufpr.mural.core.Post;
 
 public class Usuario {
 

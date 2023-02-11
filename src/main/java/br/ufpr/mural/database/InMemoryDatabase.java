@@ -1,5 +1,5 @@
 
-package br.ufpr.mural.server;
+package br.ufpr.mural.database;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import br.ufpr.mural.core.mural.Anuncio;
-import br.ufpr.mural.core.mural.Comentario;
-import br.ufpr.mural.core.mural.Evento;
-import br.ufpr.mural.core.mural.Lembrete;
-import br.ufpr.mural.core.mural.Mural;
-import br.ufpr.mural.core.mural.Post;
-import br.ufpr.mural.core.mural.Reacao;
-import br.ufpr.mural.core.mural.Sugestao;
-import br.ufpr.mural.core.usuario.Usuario;
+import br.ufpr.mural.core.Anuncio;
+import br.ufpr.mural.core.Comentario;
+import br.ufpr.mural.core.Evento;
+import br.ufpr.mural.core.Lembrete;
+import br.ufpr.mural.core.Mural;
+import br.ufpr.mural.core.Post;
+import br.ufpr.mural.core.Reacao;
+import br.ufpr.mural.core.Sugestao;
+import br.ufpr.mural.core.Usuario;
 
 
 public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Object
@@ -197,6 +197,12 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 
 	@Override
 	public void removerPost(int idPost) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void limparBase() {
 		// TODO Auto-generated method stub
 		
 	}

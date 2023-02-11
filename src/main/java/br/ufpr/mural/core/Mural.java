@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.ufpr.mural.core.usuario.Usuario;
+import br.ufpr.mural.core.Usuario;
 
 public class Mural {
   
@@ -44,4 +44,4 @@ public class Mural {
 		return nome;
 	}
 }
-}
+

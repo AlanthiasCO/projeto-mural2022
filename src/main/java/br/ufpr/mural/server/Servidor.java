@@ -16,12 +16,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import br.ufpr.mural.core.mural.Anuncio;
-import br.ufpr.mural.core.mural.Evento;
-import br.ufpr.mural.core.mural.Mural;
-import br.ufpr.mural.core.mural.Post;
-import br.ufpr.mural.core.mural.Reacao;
-import br.ufpr.mural.core.usuario.Usuario;
+import br.ufpr.mural.core.Anuncio;
+import br.ufpr.mural.core.Evento;
+import br.ufpr.mural.core.Mural;
+import br.ufpr.mural.core.Post;
+import br.ufpr.mural.core.Reacao;
+import br.ufpr.mural.core.Usuario;
+import br.ufpr.mural.database.DatabaseDao;
+import br.ufpr.mural.database.InMemoryDatabase;
 
 public class Servidor {
 
@@ -113,7 +115,7 @@ public class Servidor {
 		database.inserirUsuario(usuarioAdmin);
 
 		if (tipoComando.equals(Comando.LIMPAR_BANCO.toString())) { // limpeza do banco para testes
-			this.database.limparBanco(); // CHAMA MÉTODO QUE LIMPA BASE NO PRÓPRIO OBJETO database
+			this.database.limparBase(); // CHAMA MÉTODO QUE LIMPA BASE NO PRÓPRIO OBJETO database
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
 		}
@@ -154,7 +156,7 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			Mural mural = new Mural(nomeMural);
-			database.criarMural(mural);
+			database.inserirMural(mural);
 			listaDeResultado.add(Resposta.OK.toString());
 		}
 
