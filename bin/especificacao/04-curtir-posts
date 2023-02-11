@@ -1,0 +1,61 @@
+Curtidas (demonstrar interesse)
+
+Qualquer usuário do sistema pode curtir um anuncio para demonstrar interesse.
+Assinaturas dos comandos:
+curtir-post <user_name> <id_post>
+listar-curtidas <id_post>
+descurtir-post <user_name> <id_post>
+
+Testes:
+
+> limpar-banco
+ok
+> criar-usuario joao
+ok
+> criar-usuario maria
+ok
+> criar-usuario jose
+ok
+> criar-mural bloco2
+ok
+> login joao
+ok
+> usar-mural bloco2
+ok
+> postar-anuncio "Vende-se Livro de Algebra"
+ok
+> postar-anuncio "Amanhã não haverá aula de Calculo"
+ok
+> listar-posts bloco2
+id_2 anuncio joao "Amanhã não haverá aula de Calculo"
+id_1 anuncio joao "Vende-se Livro de Algebra"
+> logout
+ok
+> login maria
+ok
+> curtir-post 1
+ok
+> listar-reacoes 1
+maria curtiu
+> logout
+ok
+> login jose
+ok
+> odiar-post 1
+ok
+> listar-reacoes 1
+jose odiou
+maria curtiu
+> remover-reacao-post 1
+ok
+> listar-reacoes 1
+maria curtiu
+> colocar-sem-nocao-post 1
+ok
+> listar-reacoes 1
+jose achou sem noção
+maria curtiu
+> curtir-post 2
+post-nao-encontrados
+> listar-curtidas 2
+nada-a-mostrar

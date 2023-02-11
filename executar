@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "" = "$(which mvn)" ]; then
+    echo "O maven não foi encontrado."
+    echo "Se você usa uma distribução baseada no debian,"
+    echo "o maven pode ser instalado com o comando"
+    echo "sudo apt install maven"
+    exit
+fi
+
+mvn exec:java
