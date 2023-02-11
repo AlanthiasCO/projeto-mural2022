@@ -52,7 +52,7 @@ id_1 evento joao "Encontro dos Estudantes de Jandaia" 08/11/2017 17:00 "Bloco I 
 ok
 > listar-eventos-confirmados maria
 id_1 evento joao "Encontro dos Estudantes de Jandaia" 08/11/2017 17:00 "Bloco I - UFPR"
-id_3 evento joao "Bailão dos Jeca" 09/11/2017 22:00 "Green Club"
+id_3 evento maria "Bailão dos Jeca" 09/11/2017 22:00 "Green Club"
 > logout
 ok
 > login joao
