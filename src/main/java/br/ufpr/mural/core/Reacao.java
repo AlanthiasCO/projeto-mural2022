@@ -1,5 +1,18 @@
-package br.ufpr.mural.core;
+package br.ufpr.mural.core.mural;
 
-public class Reacao {
+import br.ufpr.mural.core.usuario.Usuario;
 
-}
+public abstract class Reacao {
+	
+	private Usuario usuario;
+
+	
+	public Reacao(Usuario usuario) {
+		super();
+		this.usuario = usuario;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
