@@ -56,6 +56,6 @@ ok
 jose achou sem noção
 maria curtiu
 > curtir-post 2
-post-nao-encontrados
+ok
 > listar-curtidas 2
-nada-a-mostrar
+jose curtiu
