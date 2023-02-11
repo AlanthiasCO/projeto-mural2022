@@ -2,9 +2,19 @@ package br.ufpr.mural.server;
 
 public enum Comando {
 	
-	CRIAR_USUARIO("criar-usuario"),
-	LIMPAR_BASE("limpar-banco"),
-	CRIAR_MURAL("criar-mural");
+	LIMPAR_BANCO("limpar-banco"), 
+	CRIAR_USUARIO("criar-usuario"), CRIAR_MURAL("criar-mural"),
+	LOGIN("login"), LOGOUT("logout"),
+	POSTAR_ANUNCIO("postar-anuncio"), POSTAR_EVENTO("postar-evento"), 
+	LISTAR_MURAIS("listar-murais")
+	USAR_MURAL("usar-mural"), POSTAR("postar"), 
+	LISTAR_POSTS("listar-posts"),
+	EXCLUIR_POST("excluir-post"), SALVAR_POST("salvar-post"),
+	LISTAR_SALVOS("listar-salvos"), EXCLUIR_SALVO("excluir-salvo"),
+	CURTIR_POST("curtir-post"), ODIAR_POST("odiar-post"), COLOCAR_SEM_NOCAO_POST("colocar-sem-nocao-post"), LISTAR_REACOES("listar-reacoes"),
+	REMOVER_REACAO_POST("remover-reacao-post"), LISTAR_CURTIDAS("listar-curtidas"), 
+	CONFIRMAR_PRESENCA("confirmar-presenca"), LISTAR_PARTICIPANTES("listar-participantes-evento"),
+	LISTAR_EVENTOS_CONFIRMADOS("listar-eventos-confirmados"), DESCONFIRMAR_PRESENCA("desconfirmar-presenca");
 
 	private String nomeComando;
 	
