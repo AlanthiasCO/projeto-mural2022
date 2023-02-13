@@ -21,21 +21,30 @@ ok
 ok
 > usar-mural bloco2
 ok
-> postar-anuncio joao "Vende-se Livro de Algebra"
+> login joao
+ok
+> postar-anuncio "Vende-se Livro de Algebra"
 ok
 > listar-posts bloco2
-id1 anuncio joao "Vende-se Livro de Algebra"
-> sugerir 1 maria jose
+id_1 anuncio joao "Vende-se Livro de Algebra"
+> logout
+ok
+> login maria
+ok
+> sugerir 1 jose
 ok
 > listar-sugestoes jose
-maria: id1 anuncio joao "Vende-se Livro de Algebra"
+maria: id_1 anuncio joao "Vende-se Livro de Algebra"
 > listar-sugeridos maria
-jose: id1 anuncio joao "Vende-se Livro de Algebra"
+jose: id_1 anuncio joao "Vende-se Livro de Algebra"
 > listar-sugestoes-post 1
 maria jose
-> sugerir 1 jose carlos
+> logout
+ok
+> login jose
+ok
+> sugerir 1 carlos
 ok
 > listar-sugestoes-post 1
 maria jose
 jose carlos
-

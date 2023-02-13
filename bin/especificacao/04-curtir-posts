@@ -53,9 +53,9 @@ maria curtiu
 > colocar-sem-nocao-post 1
 ok
 > listar-reacoes 1
-jose achou sem noção
+jose achou sem nocao
 maria curtiu
-> curtir-post 2
-post-nao-encontrados
-> listar-curtidas 2
+> curtir-post 3
+post-nao-encontrado
+> listar-curtidas 3
 nada-a-mostrar

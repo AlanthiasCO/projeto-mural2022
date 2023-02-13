@@ -39,7 +39,7 @@ public class Servidor {
 	public void iniciar() throws IOException {
 
 		ServerSocket socket = new ServerSocket(PORTA);
-		database = new InMemoryDatabase();
+
 
 		System.out.println("Servidor iniciado.");
 

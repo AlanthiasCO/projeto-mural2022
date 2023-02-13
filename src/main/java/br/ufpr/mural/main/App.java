@@ -18,8 +18,8 @@ public class App {
         
         
     	/*ALTERACAO DE ARMAZENAMENTO > INMEMORY OU MYSQL*/
-        InMemoryDatabase database = new InMemoryDatabase();
-        //JdbcSqlDatabaseDao database = new JdbcSqlDatabaseDao();	//< FECHADO, OU SEJA, O SERVIDOR ESTÁ ARMAZENANDO NA CLASSE INMEMORY
+        //InMemoryDatabase database = new InMemoryDatabase();
+        JdbcSqlDatabaseDao database = new JdbcSqlDatabaseDao();	//< FECHADO, OU SEJA, O SERVIDOR ESTÁ ARMAZENANDO NA CLASSE INMEMORY
         Servidor servidor = new Servidor(database);
         servidor.iniciar();        
     }

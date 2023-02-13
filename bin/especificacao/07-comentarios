@@ -20,21 +20,39 @@ ok
 ok
 > usar-mural bloco2
 ok
-> postar-anuncio joao "Vende-se Livro de Algebra"
+> login joao
+ok
+> postar-anuncio "Vende-se Livro de Algebra"
 ok
 > listar-posts bloco2
 id_1 anuncio joao "Vende-se Livro de Algebra"
-> comentar maria 1 "Quanto custa?"
+> logout
 ok
-> comentar jose 1 "Entrega na UFPR?"
+> login maria
 ok
-> comentar joao 1 "50 reais. Entrego na UFPR"
+> comentar 1 "Quanto custa?"
+ok
+> logout
+ok
+> login jose
+ok
+> comentar 1 "Entrega na UFPR?"
+ok
+> logout
+ok
+> login joao
+ok
+> comentar 1 "50 reais. Entrego na UFPR"
 ok
 > listar-comentarios 1
 id_1 maria: "Quanto custa?"
 id_2 jose: "Entrega na UFPR?"
 id_3 joao: "50 reais. Entrego na UFPR"
-> excluir-comentario jose 1 2
+> logout
+ok
+> login jose
+ok
+> excluir-comentario 1 2
 ok
 > listar-comentarios 1
 id_1 maria: "Quanto custa?"

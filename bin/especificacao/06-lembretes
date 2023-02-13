@@ -18,20 +18,25 @@ ok
 ok
 > usar-mural bloco2
 ok
-> postar-anuncio joao "Vende-se Livro de Algebra"
+> login joao
+ok
+> postar-anuncio "Vende-se Livro de Algebra"
 ok
 > listar-posts bloco2
 id_1 anuncio joao "Vende-se Livro de Algebra"
-> criar-lembrete maria 1 10/11/2017 14:00
+> logout
 ok
-> criar-lembrete maria 1 11/11/2017 15:00
+> login maria
 ok
-> listar-lembretes maria
+> criar-lembrete 1 10/11/2017 14:00
+ok
+> criar-lembrete 1 11/11/2017 15:00
+ok
+> listar-lembretes
 id_1 10/11/2017 14:00 id_1 anuncio joao "Vende-se Livro de Algebra"
 id_2 11/11/2017 15:00 id_1 anuncio joao "Vende-se Livro de Algebra"
-> remover-lembrete maria 1
+> remover-lembrete 1
 ok
-> listar-lembretes maria
+> listar-lembretes
 id_2 11/11/2017 15:00 id_1 anuncio joao "Vende-se Livro de Algebra"
-
 

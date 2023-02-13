@@ -40,13 +40,15 @@ ok
 > listar-salvos
 nada-a-mostrar
 > salvar-post 2
-post-nao-encontrado
+ok
+> listar-salvos
+id_2 anuncio joao "Amanhã não haverá aula de Calculo"
 > excluir-salvo 2
-post-nao-encontrado
+ok
 > salvar-post 1
 ok
 > salvar-post 2
 ok
 > listar-salvos
-id_2 aviso joao "Amanhã não haverá aula de Calculo"
+id_2 anuncio joao "Amanhã não haverá aula de Calculo"
 id_1 anuncio joao "Vende-se Livro de Algebra"

@@ -32,7 +32,6 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
 	 */
     public void inserirUsuario(Usuario usuario){
     	String sql = "INSERT INTO usuario (id, userName) VALUES (?, ?)";
-    //	String sql = "INSERT INTO usuario (userName) VALUES ( '" + usuario.getUserName() + "')";
     	
         try {
             PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -40,7 +39,6 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
 
             stmt.setInt(1, usuario.getId());
             stmt.setString(2, usuario.getUserName());
-            
             stmt.execute();
             stmt.close();
 
