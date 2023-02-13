@@ -2,6 +2,7 @@
 package br.ufpr.mural.server;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,7 +52,7 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 	}
 
 	// MURAIS
-	public void criarMural(Mural mural) {
+	public void inserirMural(Mural mural) {
 		this.murais.put(mural.getNome(), mural);
 	}
 
@@ -61,19 +62,14 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 	}
 
 	@Override
-	public Map<String, Mural> listMurais() {
-		return this.murais;
+	public Collection<Mural> listMurais() {
+		return this.murais.values();
 	}
 
 	
 	
 	//OBRIGATORIOS DEVIDO O IMPLEMENTS
-	
-	@Override
-	public void inserirMural(Mural mural) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public Mural recuperarMural(int idMural) {
@@ -195,11 +191,6 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 		return null;
 	}
 
-	@Override
-	public void removerPost(int idPost) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 

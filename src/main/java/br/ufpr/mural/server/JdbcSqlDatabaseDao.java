@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -78,15 +79,32 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
 		return null;
     }
     
+	@Override
+	public void inserirMural(Mural mural) {
+		String sql = "INSERT INTO mural (id, nome) VALUES (?, ?)";		
+        try {
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            System.out.println(sql);
+
+            stmt.setInt(1, mural.getId());
+            stmt.setString(2, mural.getNome());
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    
+	}
+	
+	
+	
+    
     public void inserirPost(Post post, Mural mural) {
     	
     }
 
-	@Override
-	public void inserirMural(Mural mural) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public Mural recuperarMural(int idMural) {
@@ -214,11 +232,6 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
 		return null;
 	}
 
-	@Override
-	public Map<String, Mural> listMurais() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void limparBanco() {
@@ -227,16 +240,11 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
 	}
 
 	@Override
-	public void criarMural(Mural mural) {
+	public Collection<Mural> listMurais() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	@Override
-	public void removerPost(int idPost) {
-		// TODO Auto-generated method stub
-		
-	}
     
     //...
     

@@ -9,10 +9,22 @@ import br.ufpr.mural.core.usuario.Usuario;
 
 public class Mural {
 
+	private static int idUltimoMural = 0;
+	private Integer idMural;
 	private String nome;
 	private Map<Integer, Post> posts;
 
+	private static synchronized void incrementarIdUltimo() {
+		idUltimoMural++;
+	}
+	
+    public synchronized static void resetaIds() {
+    	idUltimoMural = 0;
+    }
+	
 	public Mural(String nome) {
+		incrementarIdUltimo();
+		this.idMural = idUltimoMural;
 		this.nome = nome;
 		this.posts = new HashMap<>();
 	}
@@ -42,6 +54,10 @@ public class Mural {
 	@Override
 	public String toString() {
 		return nome;
+	}
+
+	public Integer getId() {
+		return this.idMural;
 	}
 
 

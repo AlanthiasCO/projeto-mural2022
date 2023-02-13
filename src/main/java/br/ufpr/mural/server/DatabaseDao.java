@@ -1,5 +1,6 @@
 package br.ufpr.mural.server;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public interface DatabaseDao {
 	
 	Mural recuperarMural(int idMural);
 	
-	Map<String, Mural> listMurais();
+	Collection<Mural> listMurais();
 	
 	void recuperarPosts(Mural mural);
 	
@@ -73,9 +74,7 @@ public interface DatabaseDao {
 
 	void limparBanco();
 
-	void criarMural(Mural mural);
-	
-	void removerPost(int idPost);
+
 	
 	
 }

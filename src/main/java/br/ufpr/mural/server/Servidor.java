@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -154,14 +155,16 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			Mural mural = new Mural(nomeMural);
-			database.criarMural(mural);
+			database.inserirMural(mural);
 			listaDeResultado.add(Resposta.OK.toString());
 		}
 
 		// LISTAR-MURAIS -----> OK
 		if (tipoComando.equals(Comando.LISTAR_MURAIS.toString())) {
-			Map<String, Mural> murais = database.listMurais();
-			for (Mural mural : murais.values()) {
+			
+			//IMPLEMENTAR ISSO DAQUI PARA BASICAMENTE TUDO ABAIXO
+			Collection<Mural> murais = database.listMurais();
+			for (Mural mural : murais) {
 				listaDeResultado.add(mural.toString());
 			}
 			return listaDeResultado;
