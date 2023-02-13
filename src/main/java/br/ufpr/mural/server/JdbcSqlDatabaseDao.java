@@ -46,6 +46,9 @@ public class JdbcSqlDatabaseDao implements DatabaseDao {  // DAO = Data Access O
             System.out.println(ex);
         }
     }
+    //depois de executado o servidor, sempre lembrar de ir no MYSQL e executar a seguinte query:
+    /*DELETE FROM usuario
+    WHERE id BETWEEN 1 AND 6; /*
     
     
     /*
