@@ -8,7 +8,8 @@ public enum Resposta {
 	MURAL_NAO_ENCONTRADO("mural-nao-encontrado"), NAO_ENTROU_EM_MURAL("nao-entrou-em-mural"),
 	POST_NAO_ENCONTRADO("post-nao-encontrado"), MENSAGEM_INVALIDA("mensagem-invalida"), MURAL_VAZIO("mural-vazio"),
 	NAO_AUTORIZADO("nao-autorizado"), NADA_A_MOSTRAR("nada-a-mostrar"), NAO_EH_UM_EVENTO("nao-eh-um-evento"), 
-	EVENTO_NAO_ENCONTRADO("evento-nao-encontrado"), USUARIO_NAO_CONFIRMOU_PRESENCA("nao-tinha-confirmado");
+	EVENTO_NAO_ENCONTRADO("evento-nao-encontrado"), USUARIO_NAO_CONFIRMOU_PRESENCA("nao-tinha-confirmado"), FORMATO_DATA_INVALIDO("formato-data-invalido"), 
+	LEMBRETE_NAO_ENCONTRADO("lembrete-nao-existe");
 	
 
 	String nomeMensagem;

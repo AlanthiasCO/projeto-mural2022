@@ -99,4 +99,9 @@ public abstract class Post {
 		return super.toString();
 	}
 
+	public Object getMensagem() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -6,9 +6,11 @@
 package br.ufpr.mural.core.usuario;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.ufpr.mural.core.mural.Evento;
+import br.ufpr.mural.core.mural.Lembrete;
 import br.ufpr.mural.core.mural.Post;
 
 public class Usuario {
@@ -17,6 +19,7 @@ public class Usuario {
 	private int idUsuario;
 	private List<Post> postSalvos;
 	private List<Evento> eventosConfirmados;
+	private List<Lembrete> lembretes;
 	private String userName; // identificador
 	
 	
@@ -34,6 +37,7 @@ public class Usuario {
 		this.userName = userName;
 		this.postSalvos = new ArrayList<>();
 		this.eventosConfirmados = new ArrayList<>();
+		this.lembretes = new ArrayList<>();
 	}
 
 	/*METODOS: USUARIO*/
@@ -43,9 +47,7 @@ public class Usuario {
 	public int getId() {
 		return this.idUsuario;
 	}
-	public boolean isAdmin() {
-		return this.userName.equals("admin");
-	}
+
 	
 	/*METODOS: POSTS SALVOS*/
     public List<Post> getPostsSalvos() {
@@ -71,11 +73,35 @@ public class Usuario {
     }
     
 
+    /*METODOS: LEMBRETES*/
+    public void criarLembrete(Lembrete lembrete) {
+    	this.lembretes.add(lembrete);
+    }
+    
+
+	public List<Lembrete> listLembretes() {
+		return lembretes;
+	}
+	
+
+	public void removerLembrete(Lembrete lembrete) {
+        this.lembretes.remove(lembrete);		
+	}
     
     
 	@Override
 	public String toString() {
 		return this.userName;
 	}
+
+	public Lembrete getLembrete(Integer idLembrete) {
+	    for (Lembrete lembrete : this.lembretes) {
+	        if (lembrete.getId().equals(idLembrete)) {
+	            return lembrete;
+	        }
+	    }
+	    return null;
+	}
+
 
 }

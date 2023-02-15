@@ -35,7 +35,7 @@ public class Mural {
 
 	
 	/*METODOS: POST*/
-	public void addPost(Post post) {
+	public void inserirPost(Post post) {
 		this.posts.put(post.getId(), post);
 	}
 

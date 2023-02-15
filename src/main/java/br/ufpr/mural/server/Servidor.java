@@ -7,6 +7,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +24,7 @@ import java.util.logging.Logger;
 
 import br.ufpr.mural.core.mural.Anuncio;
 import br.ufpr.mural.core.mural.Evento;
+import br.ufpr.mural.core.mural.Lembrete;
 import br.ufpr.mural.core.mural.Mural;
 import br.ufpr.mural.core.mural.Post;
 import br.ufpr.mural.core.mural.Reacao;
@@ -232,7 +238,7 @@ public class Servidor {
 			// > postar-anuncio <mensagem>[1]
 			String mensagem = comando.split(" ", 2)[1];
 			Anuncio anuncio = new Anuncio(idPost, mensagem, usuarioLogado, null);
-			muralLogado.addPost(anuncio);// varaivel de mural atual
+			muralLogado.inserirPost(anuncio);// varaivel de mural atual
 			// database.inseriroPost(anuncio, mural);
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
@@ -255,29 +261,35 @@ public class Servidor {
 				listaDeResultado.add(Resposta.MENSAGEM_INVALIDA.toString());
 				return listaDeResultado;
 			}
-			// verifica o tamanho do comando
-			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
-			// 17:00[3] "Bloco I" [4]
-			String[] split = comando.split(" ", 5);
-			// verifica se o comando possui o tamanho correto esperado
-			if (split.length < 5) {
-				listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
-				return listaDeResultado;
-			}
-			// cria o evento
-			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
-			// 17:00[3] "Bloco I" [4]
-			String mensagem = comando.split(" ", 2)[1];
-			// String data = comando.split(" ", 3)[1];
-			String hora = comando.split(" ", 4)[1];
-			String local = comando.split(" ", 5)[1];
-			Evento evento = new Evento(idPost, mensagem, usuarioLogado, null, local, hora);
-			// se for execucao em InMemoryDataBase
-			muralLogado.addPost(evento); // adicionando o evento em usuarioLogado.getMuralAtual()
-			// se for execucao em MySQL
-			// database.inserirPost(evento, mural);
-			listaDeResultado.add(Resposta.OK.toString());
-			return listaDeResultado;
+		    // verifica o tamanho do comando
+		    // > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
+		    // 17:00[3] "Bloco I" [4]
+		    String[] split = comando.split(" ", 5);
+		    // verifica se o comando possui o tamanho correto esperado
+		    if (split.length < 5) {
+		        listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
+		        return listaDeResultado;
+		    }
+		    // cria o evento
+		    // > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2] 17:00[3] "Bloco I" [4]
+		    String mensagem = comando.split(" ", 2)[1];
+		    String dataStr = comandoDividido[2];
+		    String horaStr = comandoDividido[3];
+		    String local = comandoDividido[4];
+		    LocalDateTime dataHora;
+		    try {
+		        dataHora = LocalDateTime.parse(dataStr + " " + horaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+		    } catch (DateTimeParseException e) {
+		        listaDeResultado.add(Resposta.FORMATO_DATA_INVALIDO.toString());
+		        return listaDeResultado;
+		    }
+		    Evento evento = new Evento(idPost, mensagem, usuarioLogado, null, local, dataHora);
+		    // se for execucao em InMemoryDataBase
+		    muralLogado.inserirPost(evento); // adicionando o evento em usuarioLogado.getMuralAtual()
+		    // se for execucao em MySQL
+		    // database.inserirPost(evento, mural);
+		    listaDeResultado.add(Resposta.OK.toString());
+		    return listaDeResultado;
 		}
 
 		// LISTAR posts
@@ -531,6 +543,59 @@ public class Servidor {
 			}
 			evento.desconfirmarPresenca(usuarioLogado);
 			listaDeResultado.add(Resposta.OK.toString());
+		}
+	
+	
+		if(tipoComando.equals(Comando.CRIAR_LEMBRETE.toString())){
+			 if (usuarioLogado == null) {
+			        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+			        return listaDeResultado;
+			    }
+			    String[] parametros = comando.split(" ");
+			    Integer idPost = Integer.parseInt(parametros[1]);
+			    String data = parametros[2];
+			    String hora = parametros[3];
+			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		        Date dataHora = null;
+				try {
+					dataHora = dateFormat.parse(data + " " + hora);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+		        Post post = muralLogado.getPost(idPost);
+		        Lembrete lembrete = new Lembrete(post, dataHora);
+		        usuarioLogado.criarLembrete(lembrete);
+		        listaDeResultado.add(Resposta.OK.toString());
+
+			    return listaDeResultado;
+			}
+		
+		if (tipoComando.equals(Comando.LISTAR_LEMBRETES.toString())) {
+		    if (usuarioLogado == null) {
+		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+		        return listaDeResultado;
+		    }
+		    List<Lembrete> lembretes = usuarioLogado.listLembretes();
+		    for (Lembrete lembrete : lembretes) {
+		        listaDeResultado.add(lembrete.toString());
+		    }
+		    return listaDeResultado;
+		}
+		
+		
+		if(tipoComando.equals(Comando.REMOVER_LEMBRETE.toString())){
+		    if (usuarioLogado == null) {
+		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+		        return listaDeResultado;
+		    }
+		    Integer idLembrete = Integer.parseInt(comando.split(" ")[1]);
+		    Lembrete lembrete = usuarioLogado.getLembrete(idLembrete);
+		    if (lembrete == null) {
+		        listaDeResultado.add(Resposta.LEMBRETE_NAO_ENCONTRADO.toString());
+		        return listaDeResultado;
+		    }
+		    usuarioLogado.removerLembrete(lembrete);
+		    listaDeResultado.add(Resposta.OK.toString());
 		}
 
 		return listaDeResultado; // ultimo return, lá do começo

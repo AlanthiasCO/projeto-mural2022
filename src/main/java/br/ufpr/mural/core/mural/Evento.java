@@ -13,7 +13,7 @@ public class Evento extends Post {
 	private String horario;
 	private List<Usuario> usuariosConfirmados;
 
-	public Evento(int idPost, String texto, Usuario usuarioCriador, LocalDateTime data, String local, String horario) {
+	public Evento(int idPost, String texto, Usuario usuarioCriador, LocalDateTime data, String local, LocalDateTime dataHora) {
 		super(texto, usuarioCriador);
 		this.data = data;
 		this.local = local;

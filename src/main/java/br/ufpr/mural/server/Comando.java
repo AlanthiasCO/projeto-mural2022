@@ -9,7 +9,8 @@ public enum Comando {
 	EXCLUIR_POST("excluir-post"), SALVAR_POST("salvar-post"), LISTAR_SALVOS("listar-salvos"), EXCLUIR_SALVO("excluir-salvo"),
 	CURTIR_POST("curtir-post"), ODIAR_POST("odiar-post"), COLOCAR_SEM_NOCAO_POST("colocar-sem-nocao-post"), LISTAR_REACOES("listar-reacoes"),
 	REMOVER_REACAO_POST("remover-reacao-post"), LISTAR_CURTIDAS("listar-curtidas"), CONFIRMAR_PRESENCA("confirmar-presenca"), LISTAR_PARTICIPANTES("listar-participantes-evento"),
-	LISTAR_EVENTOS_CONFIRMADOS("listar-eventos-confirmados"), DESCONFIRMAR_PRESENCA("desconfirmar-presenca");
+	LISTAR_EVENTOS_CONFIRMADOS("listar-eventos-confirmados"), DESCONFIRMAR_PRESENCA("desconfirmar-presenca"), CRIAR_LEMBRETE("criar-lembrete"), 
+	LISTAR_LEMBRETES("listar-lembretes"), REMOVER_LEMBRETE("remover-lembrete");
 
 
 
