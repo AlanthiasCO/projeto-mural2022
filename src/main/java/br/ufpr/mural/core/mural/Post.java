@@ -17,6 +17,7 @@ public abstract class Post {
 	private Usuario usuarioCriador;
 	private LocalDateTime dataCriacao;
 	private List<Reacao> reacoes;
+	private List<Comentario> comentarios;
 
 	private static synchronized void incrementarIdUltimo() {
 		ultimoIdPost++;
@@ -33,6 +34,7 @@ public abstract class Post {
 		this.usuarioCriador = usuarioCriador;
 		this.dataCriacao = LocalDateTime.now();
 		this.reacoes = new ArrayList<>();
+		this.comentarios = new ArrayList<>();
 
 	}
 
@@ -94,14 +96,39 @@ public abstract class Post {
 
 	}
 	
+	public void addComentario(Usuario usuario, String mensagem) {
+	    Comentario comentario = new Comentario(usuario, mensagem);
+	    comentarios.add(comentario);
+	}
+	
+	public List<Comentario> listComentarios() {
+		return comentarios;
+	}
+	
+	public void removerComentario(Integer idComentario) {
+	    for (Comentario comentario : comentarios) {
+	        if (comentario.getIdComent().equals(idComentario)) {
+	            comentarios.remove(comentario);
+	            break;
+	        }
+	    }
+	}
+	/*
+	public Comentario getCometario(Integer idComentario) {
+	    System.out.println("Buscando comentario com ID: " + idComentario);
+	    for (Comentario comentario : this.comentarios) {
+	        if (comentario.getIdComent().equals(idComentario)) {
+	            return comentario;
+	        }
+	    }
+	    return null;
+	}*/
+	
 	@Override
 	public String toString() {
 		return super.toString();
 	}
 
-	public Object getMensagem() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

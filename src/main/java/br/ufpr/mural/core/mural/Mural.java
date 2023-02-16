@@ -50,6 +50,7 @@ public class Mural {
 	public Post getPost(Integer idPost) {
 		return this.posts.get(idPost);
 	}
+	
 
 	@Override
 	public String toString() {

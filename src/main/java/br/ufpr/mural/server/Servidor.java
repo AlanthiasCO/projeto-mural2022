@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import br.ufpr.mural.core.mural.Anuncio;
+import br.ufpr.mural.core.mural.Comentario;
 import br.ufpr.mural.core.mural.Evento;
 import br.ufpr.mural.core.mural.Lembrete;
 import br.ufpr.mural.core.mural.Mural;
@@ -597,6 +598,84 @@ public class Servidor {
 		    usuarioLogado.removerLembrete(lembrete);
 		    listaDeResultado.add(Resposta.OK.toString());
 		}
+		
+		
+		if (tipoComando.equals(Comando.COMENTAR_POST.toString())) {
+		    if (usuarioLogado == null) {
+		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+		        return listaDeResultado;
+		    }
+		    
+		    String[] parametros = comando.split(" ", 3); // limita o split para no máximo 3 substrings
+		    Integer idPost = Integer.parseInt(parametros[1]);
+		    String mensagem = parametros[2];
+		    
+		    Post post = muralLogado.getPost(idPost);
+		    if (post == null) {
+		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+		        return listaDeResultado;
+		    }
+		    
+		    post.addComentario(usuarioLogado, mensagem);
+		    
+		    listaDeResultado.add(Resposta.OK.toString());
+		    return listaDeResultado;
+		}
+		
+		if (tipoComando.equals(Comando.LISTAR_COMENTARIOS.toString())) {
+		    Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Post post = muralLogado.getPost(idPost);
+
+		    if (post == null) {
+		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+		        return listaDeResultado;
+		    }
+
+		    for (Comentario comentario : post.listComentarios()) {
+		        listaDeResultado.add(comentario.toString());
+		    }
+
+		    return listaDeResultado;
+		}
+		
+		
+
+		
+		if (tipoComando.equals(Comando.EXCLUIR_COMENTARIO.toString())) {
+		    if (usuarioLogado == null) {
+		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+		        return listaDeResultado;
+		    }
+		    String[] parametros = comando.split(" ");
+		    
+		    Integer idPost = Integer.parseInt(parametros[1]);
+		    
+		    Integer idComentario = Integer.parseInt(parametros[2]);
+		    
+		    Post post = muralLogado.getPost(idPost);
+		  /*  
+		    if (post == null) {
+		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+		        return listaDeResultado;
+		    }*/
+		   /* Comentario comentario = post.getCometario(idComentario);
+		    
+	/*	    
+		    if (comentario == null) {
+		        listaDeResultado.add(Resposta.COMENTARIO_NAO_EXISTE.toString());
+		        return listaDeResultado;
+		    }
+
+		    if (!comentario.getUsuarioComent().equals(usuarioLogado)) {
+		        listaDeResultado.add(Resposta.COMENTARIO_NAO_CRIADO_PELO_USUARIO_LOGADO.toString());
+		        return listaDeResultado;
+		    }*/
+		    post.removerComentario(idComentario);
+		    listaDeResultado.add(Resposta.OK.toString());
+		    return listaDeResultado;
+		}
+		
+		
 
 		return listaDeResultado; // ultimo return, lá do começo
 	}
