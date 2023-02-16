@@ -18,8 +18,6 @@ public class Comentario {
     	idUltimoComent = 0;
     }
 	
-	
-	
 	public Comentario(Usuario usuario, String comentario) {
 		incrementarIdUltimoComent();
 		this.usuarioComent = usuario;
@@ -28,6 +26,7 @@ public class Comentario {
 
 	}
 	
+	/* METODOS: COMETARIO */
 	public Integer getIdComent() {
 		return idComentario;
 	}
@@ -39,6 +38,7 @@ public class Comentario {
 	public Usuario getUsuarioComent() {
 		return usuarioComent;
 	}
+	
 	
 	@Override
 	public String toString() {

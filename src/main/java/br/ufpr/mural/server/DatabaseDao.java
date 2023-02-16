@@ -19,62 +19,60 @@ import br.ufpr.mural.core.usuario.Usuario;
  *
  */
 
-
 public interface DatabaseDao {
 
 	void inserirUsuario(Usuario usuario);
-	
+
 	Usuario getUsuario(String userName);
-	
+
+	Collection<Usuario> listUsuarios();
+
 	void inserirMural(Mural mural);
-	
+
 	Mural getMural(String nomeMural);
-	
+
 	Mural recuperarMural(int idMural);
-	
+
 	Collection<Mural> listMurais();
-	
+
 	void recuperarPosts(Mural mural);
-	
+
 	void inserirPost(Evento post, Mural mural);
-	
+
 	void inserirPost(Anuncio post, Mural mural);
-	
+
 	void inserirComentario(Comentario comentario, Post post);
-	
+
 	List<Comentario> recuperarComentarios(Post post);
-	
+
 	void inserirPostSalvo(Post post, Usuario usuario);
-	
+
 	List<Post> recuperarPostsSalvos(Usuario usuario);
-	
+
 	void inserirReacao(Reacao reacao, Post post);
-	
+
 	List<Reacao> recuperarReacoes(Post post);
-	
+
 	void removerReacao(Reacao reacao, Post post);
-	
+
 	void inserirConfirmacaoEvento(Evento evento, Usuario usuario);
-	
+
 	List<Evento> recuperarEventosConfirmados(Usuario usuario);
-	
+
 	void removerConfirmacaoEvento(Evento evento, Usuario usuario);
-	
+
 	void inserirLembrete(Lembrete lembrete, Usuario usuario);
-	
+
 	List<Lembrete> recuperarLembretes(Usuario usuario);
-	
+
 	void inserirSugestao(Sugestao sugestao);
-	
+
 	List<Sugestao> recuperarSugestoesRecebidas(Usuario usuario);
-	
+
 	List<Sugestao> recuperarSugestoesFeitas(Usuario usuario);
-	
+
 	List<Sugestao> recuperarSugestoesPost(Post post);
 
 	void limparBanco();
 
-
-	
-	
 }

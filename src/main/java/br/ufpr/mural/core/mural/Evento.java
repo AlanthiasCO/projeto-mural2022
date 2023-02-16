@@ -8,6 +8,7 @@ import java.util.List;
 import br.ufpr.mural.core.usuario.Usuario;
 
 public class Evento extends Post {
+	
 	private String local;
 	private LocalDateTime data;
 	private String horario;
@@ -20,6 +21,8 @@ public class Evento extends Post {
 		this.usuariosConfirmados = new ArrayList<>();
 	}
 
+	
+	/*METODOS: EVENTO */
 	public String getLocal() {
 		return local;
 	}
@@ -32,6 +35,8 @@ public class Evento extends Post {
 		return horario;
 	}
 
+	
+	/* METODOS: CONFIRMAR PRESENCA*/
 	public void confirmarPresenca(Usuario usuario) {
 		this.usuariosConfirmados.add(usuario);
 	}
@@ -44,7 +49,6 @@ public class Evento extends Post {
 		return this.usuariosConfirmados;
 	}
 	
-
 
 	@Override
 	public String toString() {

@@ -41,34 +41,33 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 		Post.resetaIdPost();
 	}
 
-	// USUARIOS
+	/* USUARIOS */
 	public void inserirUsuario(Usuario usuario) {
 		this.usuarios.put(usuario.getUserName(), usuario);
 	}
 
 	public Usuario getUsuario(String userNameNovo) {
 		return this.usuarios.get(userNameNovo);
-
+	}
+	
+	public Collection<Usuario> listUsuarios() {
+		return this.usuarios.values();
 	}
 
-	// MURAIS
+	
+	/* MURAIS */
 	public void inserirMural(Mural mural) {
 		this.murais.put(mural.getNome(), mural);
 	}
 
 	public Mural getMural(String nomeMural) {
 		return this.murais.get(nomeMural);
-	
 	}
 
 	@Override
 	public Collection<Mural> listMurais() {
 		return this.murais.values();
 	}
-
-	
-	
-	//OBRIGATORIOS DEVIDO O IMPLEMENTS
 
 
 	@Override
@@ -190,29 +189,4 @@ public class InMemoryDatabase implements DatabaseDao{ // DAO = Data Access Objec
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-
-
-	// POSTS > USANDO MAP
-	/*
-	public void adicionarPost(int idPost, Post post) {
-		this.post.put(post.getTexto(), post);
-	}
-	
-	public Map<String, Post> getPost(int idPost) {
-		return post;
-	}
-	
-	public Map<String, Post> listPosts() {
-		return this.post;
-	}
-
-	public void excluirPost(Map<String, Post> post) {
-		post.keySet().remove(post);
-	}
-*/
-	
-	
 }

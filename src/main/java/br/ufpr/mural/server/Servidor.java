@@ -29,6 +29,7 @@ import br.ufpr.mural.core.mural.Lembrete;
 import br.ufpr.mural.core.mural.Mural;
 import br.ufpr.mural.core.mural.Post;
 import br.ufpr.mural.core.mural.Reacao;
+import br.ufpr.mural.core.mural.Sugestao;
 import br.ufpr.mural.core.usuario.Usuario;
 
 public class Servidor {
@@ -47,7 +48,6 @@ public class Servidor {
 	public void iniciar() throws IOException {
 
 		ServerSocket socket = new ServerSocket(PORTA);
-
 
 		System.out.println("Servidor iniciado.");
 
@@ -168,8 +168,8 @@ public class Servidor {
 
 		// LISTAR-MURAIS -----> OK
 		if (tipoComando.equals(Comando.LISTAR_MURAIS.toString())) {
-			
-			//IMPLEMENTAR ISSO DAQUI PARA BASICAMENTE TUDO ABAIXO
+
+			// IMPLEMENTAR ISSO DAQUI PARA BASICAMENTE TUDO ABAIXO
 			Collection<Mural> murais = database.listMurais();
 			for (Mural mural : murais) {
 				listaDeResultado.add(mural.toString());
@@ -262,35 +262,37 @@ public class Servidor {
 				listaDeResultado.add(Resposta.MENSAGEM_INVALIDA.toString());
 				return listaDeResultado;
 			}
-		    // verifica o tamanho do comando
-		    // > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
-		    // 17:00[3] "Bloco I" [4]
-		    String[] split = comando.split(" ", 5);
-		    // verifica se o comando possui o tamanho correto esperado
-		    if (split.length < 5) {
-		        listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
-		        return listaDeResultado;
-		    }
-		    // cria o evento
-		    // > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2] 17:00[3] "Bloco I" [4]
-		    String mensagem = comando.split(" ", 2)[1];
-		    String dataStr = comandoDividido[2];
-		    String horaStr = comandoDividido[3];
-		    String local = comandoDividido[4];
-		    LocalDateTime dataHora;
-		    try {
-		        dataHora = LocalDateTime.parse(dataStr + " " + horaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-		    } catch (DateTimeParseException e) {
-		        listaDeResultado.add(Resposta.FORMATO_DATA_INVALIDO.toString());
-		        return listaDeResultado;
-		    }
-		    Evento evento = new Evento(idPost, mensagem, usuarioLogado, null, local, dataHora);
-		    // se for execucao em InMemoryDataBase
-		    muralLogado.inserirPost(evento); // adicionando o evento em usuarioLogado.getMuralAtual()
-		    // se for execucao em MySQL
-		    // database.inserirPost(evento, mural);
-		    listaDeResultado.add(Resposta.OK.toString());
-		    return listaDeResultado;
+			// verifica o tamanho do comando
+			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
+			// 17:00[3] "Bloco I" [4]
+			String[] split = comando.split(" ", 5);
+			// verifica se o comando possui o tamanho correto esperado
+			if (split.length < 5) {
+				listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
+				return listaDeResultado;
+			}
+			// cria o evento
+			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
+			// 17:00[3] "Bloco I" [4]
+			String mensagem = comando.split(" ", 2)[1];
+			String dataStr = comandoDividido[2];
+			String horaStr = comandoDividido[3];
+			String local = comandoDividido[4];
+			LocalDateTime dataHora;
+			try {
+				dataHora = LocalDateTime.parse(dataStr + " " + horaStr,
+						DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+			} catch (DateTimeParseException e) {
+				listaDeResultado.add(Resposta.FORMATO_DATA_INVALIDO.toString());
+				return listaDeResultado;
+			}
+			Evento evento = new Evento(idPost, mensagem, usuarioLogado, null, local, dataHora);
+			// se for execucao em InMemoryDataBase
+			muralLogado.inserirPost(evento); // adicionando o evento em usuarioLogado.getMuralAtual()
+			// se for execucao em MySQL
+			// database.inserirPost(evento, mural);
+			listaDeResultado.add(Resposta.OK.toString());
+			return listaDeResultado;
 		}
 
 		// LISTAR posts
@@ -409,7 +411,7 @@ public class Servidor {
 			if (post == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
 				return listaDeResultado;
-				}
+			}
 			post.curtir(usuarioLogado);
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
@@ -425,7 +427,7 @@ public class Servidor {
 			if (post == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
 				return listaDeResultado;
-				}
+			}
 			post.odiar(usuarioLogado);
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
@@ -441,7 +443,7 @@ public class Servidor {
 			if (post == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
 				return listaDeResultado;
-				}
+			}
 			post.semNocao(usuarioLogado);
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
@@ -545,137 +547,223 @@ public class Servidor {
 			evento.desconfirmarPresenca(usuarioLogado);
 			listaDeResultado.add(Resposta.OK.toString());
 		}
-	
-	
-		if(tipoComando.equals(Comando.CRIAR_LEMBRETE.toString())){
-			 if (usuarioLogado == null) {
-			        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
-			        return listaDeResultado;
-			    }
-			    String[] parametros = comando.split(" ");
-			    Integer idPost = Integer.parseInt(parametros[1]);
-			    String data = parametros[2];
-			    String hora = parametros[3];
-			    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		        Date dataHora = null;
-				try {
-					dataHora = dateFormat.parse(data + " " + hora);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-		        Post post = muralLogado.getPost(idPost);
-		        Lembrete lembrete = new Lembrete(post, dataHora);
-		        usuarioLogado.criarLembrete(lembrete);
-		        listaDeResultado.add(Resposta.OK.toString());
 
-			    return listaDeResultado;
+		if (tipoComando.equals(Comando.CRIAR_LEMBRETE.toString())) {
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
 			}
-		
+			String[] parametros = comando.split(" ");
+			Integer idPost = Integer.parseInt(parametros[1]);
+			String data = parametros[2];
+			String hora = parametros[3];
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			Date dataHora = null;
+			try {
+				dataHora = dateFormat.parse(data + " " + hora);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			Post post = muralLogado.getPost(idPost);
+			Lembrete lembrete = new Lembrete(post, dataHora);
+			usuarioLogado.criarLembrete(lembrete);
+			listaDeResultado.add(Resposta.OK.toString());
+
+			return listaDeResultado;
+		}
+
 		if (tipoComando.equals(Comando.LISTAR_LEMBRETES.toString())) {
-		    if (usuarioLogado == null) {
-		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
-		        return listaDeResultado;
-		    }
-		    List<Lembrete> lembretes = usuarioLogado.listLembretes();
-		    for (Lembrete lembrete : lembretes) {
-		        listaDeResultado.add(lembrete.toString());
-		    }
-		    return listaDeResultado;
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+			List<Lembrete> lembretes = usuarioLogado.listLembretes();
+			for (Lembrete lembrete : lembretes) {
+				listaDeResultado.add(lembrete.toString());
+			}
+			return listaDeResultado;
 		}
-		
-		
-		if(tipoComando.equals(Comando.REMOVER_LEMBRETE.toString())){
-		    if (usuarioLogado == null) {
-		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
-		        return listaDeResultado;
-		    }
-		    Integer idLembrete = Integer.parseInt(comando.split(" ")[1]);
-		    Lembrete lembrete = usuarioLogado.getLembrete(idLembrete);
-		    if (lembrete == null) {
-		        listaDeResultado.add(Resposta.LEMBRETE_NAO_ENCONTRADO.toString());
-		        return listaDeResultado;
-		    }
-		    usuarioLogado.removerLembrete(lembrete);
-		    listaDeResultado.add(Resposta.OK.toString());
+
+		if (tipoComando.equals(Comando.REMOVER_LEMBRETE.toString())) {
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+			Integer idLembrete = Integer.parseInt(comando.split(" ")[1]);
+			Lembrete lembrete = usuarioLogado.getLembrete(idLembrete);
+			if (lembrete == null) {
+				listaDeResultado.add(Resposta.LEMBRETE_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+			usuarioLogado.removerLembrete(lembrete);
+			listaDeResultado.add(Resposta.OK.toString());
 		}
-		
-		
+
 		if (tipoComando.equals(Comando.COMENTAR_POST.toString())) {
-		    if (usuarioLogado == null) {
-		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
-		        return listaDeResultado;
-		    }
-		    
-		    String[] parametros = comando.split(" ", 3); // limita o split para no máximo 3 substrings
-		    Integer idPost = Integer.parseInt(parametros[1]);
-		    String mensagem = parametros[2];
-		    
-		    Post post = muralLogado.getPost(idPost);
-		    if (post == null) {
-		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
-		        return listaDeResultado;
-		    }
-		    
-		    post.addComentario(usuarioLogado, mensagem);
-		    
-		    listaDeResultado.add(Resposta.OK.toString());
-		    return listaDeResultado;
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+
+			String[] parametros = comando.split(" ", 3); // limita o split para no máximo 3 substrings
+			Integer idPost = Integer.parseInt(parametros[1]);
+			String mensagem = parametros[2];
+
+			Post post = muralLogado.getPost(idPost);
+			if (post == null) {
+				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+
+			post.addComentario(usuarioLogado, mensagem);
+
+			listaDeResultado.add(Resposta.OK.toString());
+			return listaDeResultado;
 		}
-		
+
 		if (tipoComando.equals(Comando.LISTAR_COMENTARIOS.toString())) {
-		    Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
 			Post post = muralLogado.getPost(idPost);
 
-		    if (post == null) {
-		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
-		        return listaDeResultado;
-		    }
+			if (post == null) {
+				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
 
-		    for (Comentario comentario : post.listComentarios()) {
-		        listaDeResultado.add(comentario.toString());
-		    }
+			for (Comentario comentario : post.listComentarios()) {
+				listaDeResultado.add(comentario.toString());
+			}
 
-		    return listaDeResultado;
+			return listaDeResultado;
 		}
-		
-		
 
-		
 		if (tipoComando.equals(Comando.EXCLUIR_COMENTARIO.toString())) {
-		    if (usuarioLogado == null) {
-		        listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
-		        return listaDeResultado;
-		    }
-		    String[] parametros = comando.split(" ");
-		    
-		    Integer idPost = Integer.parseInt(parametros[1]);
-		    
-		    Integer idComentario = Integer.parseInt(parametros[2]);
-		    
-		    Post post = muralLogado.getPost(idPost);
-		  /*  
-		    if (post == null) {
-		        listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
-		        return listaDeResultado;
-		    }*/
-		   /* Comentario comentario = post.getCometario(idComentario);
-		    
-	/*	    
-		    if (comentario == null) {
-		        listaDeResultado.add(Resposta.COMENTARIO_NAO_EXISTE.toString());
-		        return listaDeResultado;
-		    }
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+			String[] parametros = comando.split(" ");
 
-		    if (!comentario.getUsuarioComent().equals(usuarioLogado)) {
-		        listaDeResultado.add(Resposta.COMENTARIO_NAO_CRIADO_PELO_USUARIO_LOGADO.toString());
-		        return listaDeResultado;
-		    }*/
-		    post.removerComentario(idComentario);
-		    listaDeResultado.add(Resposta.OK.toString());
-		    return listaDeResultado;
+			Integer idPost = Integer.parseInt(parametros[1]);
+
+			Integer idComentario = Integer.parseInt(parametros[2]);
+
+			Post post = muralLogado.getPost(idPost);
+			/*
+			 * if (post == null) {
+			 * listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString()); return
+			 * listaDeResultado; }
+			 */
+			/*
+			 * Comentario comentario = post.getCometario(idComentario);
+			 * 
+			 * /* if (comentario == null) {
+			 * listaDeResultado.add(Resposta.COMENTARIO_NAO_EXISTE.toString()); return
+			 * listaDeResultado; }
+			 * 
+			 * if (!comentario.getUsuarioComent().equals(usuarioLogado)) {
+			 * listaDeResultado.add(Resposta.COMENTARIO_NAO_CRIADO_PELO_USUARIO_LOGADO.
+			 * toString()); return listaDeResultado; }
+			 */
+			post.removerComentario(idComentario);
+			listaDeResultado.add(Resposta.OK.toString());
+			return listaDeResultado;
 		}
-		
-		
+
+		if (tipoComando.equals(Comando.SUGERIR_POST.toString())) {
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+
+			String[] parametros = comando.split(" ");
+			Integer idPost = Integer.parseInt(parametros[1]);
+			String nomeUsuarioReceptor = parametros[2];
+
+			Post post = muralLogado.getPost(idPost);
+			if (post == null) {
+				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+
+			Usuario usuarioReceptor = database.getUsuario(nomeUsuarioReceptor);
+			if (usuarioReceptor == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+
+			Sugestao sugestao = new Sugestao(post, usuarioLogado, usuarioReceptor);
+			usuarioReceptor.addSugestaoRecebida(sugestao);
+			usuarioLogado.addSugestaoFeita(sugestao);
+
+			listaDeResultado.add(Resposta.OK.toString());
+			return listaDeResultado;
+		}
+
+		if (tipoComando.equals(Comando.LISTAR_SUGESTOES.toString())) {
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+			String nomeUsuario = comando.split(" ")[1];
+			Usuario usuario = database.getUsuario(nomeUsuario);
+			usuarioLogado.getSugestoesRecebidas();
+			for (Sugestao sugestao : usuario.getSugestoesRecebidas()) {
+				listaDeResultado.add(sugestao.toString());
+			}
+
+			return listaDeResultado;
+
+		}
+
+		if (tipoComando.equals(Comando.LISTAR_SUGERIDOS.toString())) {
+			if (usuarioLogado == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
+				return listaDeResultado;
+			}
+
+			String nomeUsuario = comando.split(" ")[1];
+			Usuario usuario = database.getUsuario(nomeUsuario);
+			if (usuario == null) {
+				listaDeResultado.add(Resposta.USUARIO_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+			List<Sugestao> sugestoesFeitas = usuario.getSugestoesFeitas();
+
+			// talvez implementar o StringBuilder dentro do metodo sugestoesFeitas
+			StringBuilder resposta = new StringBuilder();
+			for (Sugestao sugestao : sugestoesFeitas) {
+				resposta.append(sugestao.getUsuarioSugerido() + ": ").append("id_" + sugestao.getPost().getId())
+						.append(" anuncio ").append(sugestao.getPost().getUsuarioCriador() + " ")
+						.append(sugestao.getPost().getTexto());
+			}
+
+			listaDeResultado.add(resposta.toString());
+			return listaDeResultado;
+		}
+
+		if (tipoComando.equals(Comando.LISTAR_SUGESTOES_POST.toString())) {
+			String[] parametros = comando.split(" ");
+			Integer idPost = Integer.parseInt(parametros[1]);
+			Post post = muralLogado.getPost(idPost);
+
+			if (post == null) {
+				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
+				return listaDeResultado;
+			}
+
+			List<String> listaReversa = new ArrayList<>();
+			for (Usuario usuario : database.listUsuarios()) {
+				for (Sugestao sugestao : usuario.getSugestoesRecebidas()) {
+					if (sugestao.getPost().equals(post)) {
+						listaReversa.add(sugestao.getUsuarioSugestor() + " " + sugestao.getUsuarioSugerido());
+					}
+				}
+			}
+			Collections.reverse(listaReversa);
+			listaDeResultado.addAll(listaReversa);
+			return listaDeResultado;
+		}
 
 		return listaDeResultado; // ultimo return, lá do começo
 	}

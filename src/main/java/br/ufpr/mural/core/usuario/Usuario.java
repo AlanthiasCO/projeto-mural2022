@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufpr.mural.core.usuario;
 
 import java.util.ArrayList;
@@ -13,6 +8,7 @@ import br.ufpr.mural.core.mural.Comentario;
 import br.ufpr.mural.core.mural.Evento;
 import br.ufpr.mural.core.mural.Lembrete;
 import br.ufpr.mural.core.mural.Post;
+import br.ufpr.mural.core.mural.Sugestao;
 
 public class Usuario {
 
@@ -21,17 +17,18 @@ public class Usuario {
 	private List<Post> postSalvos;
 	private List<Evento> eventosConfirmados;
 	private List<Lembrete> lembretes;
+	private List<Sugestao> sugestoesRecebidas;
+	private List<Sugestao> sugestoesFeitas;
 	private String userName; // identificador
-	
-	
+
 	private static synchronized void incrementarIdUltimo() {
 		idUltimoUser++;
 	}
-	
-    public synchronized static void resetaIds() {
-    	idUltimoUser = 0;
-    }
-	
+
+	public synchronized static void resetaIds() {
+		idUltimoUser = 0;
+	}
+
 	public Usuario(String userName) {
 		incrementarIdUltimo();
 		this.idUsuario = idUltimoUser;
@@ -39,70 +36,87 @@ public class Usuario {
 		this.postSalvos = new ArrayList<>();
 		this.eventosConfirmados = new ArrayList<>();
 		this.lembretes = new ArrayList<>();
+		this.sugestoesRecebidas = new ArrayList<Sugestao>();
+		this.sugestoesFeitas = new ArrayList<Sugestao>();
 	}
 
-	/*METODOS: USUARIO*/
+	/* METODOS: USUARIO */
 	public String getUserName() {
 		return userName;
 	}
+
 	public int getId() {
 		return this.idUsuario;
 	}
 
 	
-	/*METODOS: POSTS SALVOS*/
-    public List<Post> getPostsSalvos() {
+	/* METODOS: POSTS SALVOS */
+	public List<Post> getPostsSalvos() {
 		return postSalvos;
 	}
-    
-    public void salvarPost(Post idPost) {
-    	this.postSalvos.add(idPost);
-    }
-    
-    public void excluirPostSalvo(Post post) {
-        this.postSalvos.remove(post);
-    }
 
-    
-    /*METODOS: EVENTOS CONFIRMADOS*/
-    public void addEventoConfirmado(Evento idPost) {
+	public void salvarPost(Post idPost) {
+		this.postSalvos.add(idPost);
+	}
+
+	public void excluirPostSalvo(Post post) {
+		this.postSalvos.remove(post);
+	}
+
+	
+	/* METODOS: EVENTOS CONFIRMADOS */
+	public void addEventoConfirmado(Evento idPost) {
 		this.eventosConfirmados.add(idPost);
 	}
-    
-    public List<Evento> getEventosConfirmados(){
-    	return eventosConfirmados;
-    }
-    
 
-    /*METODOS: LEMBRETES*/
-    public void criarLembrete(Lembrete lembrete) {
-    	this.lembretes.add(lembrete);
-    }
-    
+	public List<Evento> getEventosConfirmados() {
+		return eventosConfirmados;
+	}
+
+	/* METODOS: LEMBRETES */
+	public void criarLembrete(Lembrete lembrete) {
+		this.lembretes.add(lembrete);
+	}
 
 	public List<Lembrete> listLembretes() {
 		return lembretes;
 	}
-	
 
 	public void removerLembrete(Lembrete lembrete) {
-        this.lembretes.remove(lembrete);		
+		this.lembretes.remove(lembrete);
 	}
-    
-    
+	
+	public Lembrete getLembrete(Integer idLembrete) {
+		for (Lembrete lembrete : this.lembretes) {
+			if (lembrete.getId().equals(idLembrete)) {
+				return lembrete;
+			}
+		}
+		return null;
+	}
+	
+	
+	/* METODOS: SUGESTOES*/
+	public List<Sugestao> getSugestoesRecebidas() {
+		return sugestoesRecebidas;
+	}
+
+	public List<Sugestao> getSugestoesFeitas() {
+		return sugestoesFeitas;
+	}
+
+	public void addSugestaoRecebida(Sugestao sugestao) {
+		sugestoesRecebidas.add(sugestao);
+	}
+
+	public void addSugestaoFeita(Sugestao sugestao) {
+		sugestoesFeitas.add(sugestao);
+	}
+
+
 	@Override
 	public String toString() {
 		return this.userName;
 	}
-
-	public Lembrete getLembrete(Integer idLembrete) {
-	    for (Lembrete lembrete : this.lembretes) {
-	        if (lembrete.getId().equals(idLembrete)) {
-	            return lembrete;
-	        }
-	    }
-	    return null;
-	}
-
 
 }

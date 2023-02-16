@@ -29,8 +29,13 @@ public class Mural {
 		this.posts = new HashMap<>();
 	}
 
+	/* METODOS: MURAL */
 	public String getNome() {
 		return nome;
+	}
+	
+	public Integer getId() {
+		return this.idMural;
 	}
 
 	
@@ -56,11 +61,4 @@ public class Mural {
 	public String toString() {
 		return nome;
 	}
-
-	public Integer getId() {
-		return this.idMural;
-	}
-
-
-
 }

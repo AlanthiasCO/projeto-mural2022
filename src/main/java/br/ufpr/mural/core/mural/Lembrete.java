@@ -10,8 +10,6 @@ public class Lembrete {
 	private static Integer idUltimoLembrete = 0;
 	private Integer idLembrete;
 
-	
-	
 	private static synchronized void incrementarIdUltimo() {
 		idUltimoLembrete++;
 	}
@@ -25,9 +23,9 @@ public class Lembrete {
 		this.idLembrete = idUltimoLembrete;
 		this.post = post;
 		this.dataHora = dataHora;
-		
 	}
 	
+	/* METODOS: LEMBRETE */
 	public Integer getId() {
 		return idLembrete;
 	}
@@ -36,8 +34,8 @@ public class Lembrete {
 	@Override //teoricamente incorreto - nao estou pegando o tipo "evento" ou "anuncio" de nenhum lugar, apenas passei a string "anuncio" direto	
 	public String toString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		return "id_"+ this.getId() + " " + dateFormat.format(dataHora) + " id_" + post.getId() + " " + "anuncio " +
-                post.getUsuarioCriador() + " " + post.getTexto();
+		return "id_" + this.getId() + " " + dateFormat.format(dataHora) + " id_" + post.getId() + " " + "anuncio "
+				+ post.getUsuarioCriador() + " " + post.getTexto();
 	}
 
 }

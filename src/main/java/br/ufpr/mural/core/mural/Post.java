@@ -10,7 +10,6 @@ import br.ufpr.mural.core.usuario.Usuario;
 public abstract class Post {
 
 	private Mural mural;
-
 	private static int ultimoIdPost = 0;
 	protected int idPost;
 	private String texto;
@@ -38,6 +37,7 @@ public abstract class Post {
 
 	}
 
+	/* METODOS: POST */
 	public int getId() {
 		return idPost;
 	}
@@ -55,16 +55,13 @@ public abstract class Post {
 	}
 
 
-
+	/*METODOS: MURAL*/
 	public Mural getMural() {
 		return this.mural;
 	}
 
-	public void setMural(Mural mural) {
-		this.mural = mural;
 
-	}
-
+	/* METODOS: REACAO */
 	public void curtir(Usuario usuario) {
 		reacoes.add(new Curtida(usuario));
 	}
@@ -75,7 +72,6 @@ public abstract class Post {
 
 	public void semNocao(Usuario usuario) {
 		reacoes.add(new SemNocao(usuario));
-
 	}
 
 	public List<Reacao> listReacoes() {
@@ -83,19 +79,21 @@ public abstract class Post {
 	}
 	
 	public Reacao getReacaoDoUsuario(Usuario usuario) {
-        for (Reacao reacao : reacoes) {
-            if (reacao.getUsuario().equals(usuario)) {
-                return reacao;
-            }
-        }
-        return null;
-    }
+		for (Reacao reacao : reacoes) {
+			if (reacao.getUsuario().equals(usuario)) {
+				return reacao;
+			}
+		}
+		return null;
+	}
 	
 	public void removerReacao(Reacao reacao) {
 	    this.reacoes.remove(reacao);
-
 	}
 	
+	
+	
+	/*METODOS: COMENTARIO*/
 	public void addComentario(Usuario usuario, String mensagem) {
 	    Comentario comentario = new Comentario(usuario, mensagem);
 	    comentarios.add(comentario);
@@ -113,6 +111,7 @@ public abstract class Post {
 	        }
 	    }
 	}
+	
 	/*
 	public Comentario getCometario(Integer idComentario) {
 	    System.out.println("Buscando comentario com ID: " + idComentario);

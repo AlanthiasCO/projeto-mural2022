@@ -9,10 +9,7 @@ public class Anuncio extends Post {
 		super(texto, usuarioCriador);
 	}
 
-	
-	
 	public String toString() {
 		return "id_" + this.getId() + " anuncio " + this.getUsuarioCriador().getUserName() + " " + this.getTexto();
 	}
-
 }

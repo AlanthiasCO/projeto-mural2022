@@ -12,6 +12,4 @@ public class Curtida extends Reacao {
 	public String toString() {
 		return this.getUsuario() + " curtiu";
 	}
-
-	
 }
