@@ -26,3 +26,7 @@ sistemas.
 
 1. Inicie o servidor da rede social
 2. Execute ./testador em um terminal
+
+
+== Resultados == 
+...
