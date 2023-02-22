@@ -105,7 +105,6 @@ public class Servidor {
 	}
 
 	private ArrayList<String> tratarComando(String comando) {
-
 		ArrayList<String> listaDeResultado = new ArrayList<String>();
 
 		if (comando == null) {
@@ -133,7 +132,7 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			// > criar-usuario joao[1]
-			String userName = comando.split(" ")[1];
+			String userName = comandoDividido[1]; 
 			if (userName.length() < 3 || userName.length() > 20) {
 				listaDeResultado.add(Resposta.NOME_INVALIDO.toString());
 				return listaDeResultado;
@@ -168,7 +167,6 @@ public class Servidor {
 
 		// LISTAR-MURAIS -----> OK
 		if (tipoComando.equals(Comando.LISTAR_MURAIS.toString())) {
-
 			// IMPLEMENTAR ISSO DAQUI PARA BASICAMENTE TUDO ABAIXO
 			Collection<Mural> murais = database.listMurais();
 			for (Mural mural : murais) {
@@ -192,7 +190,6 @@ public class Servidor {
 			usuarioLogado = null;
 			listaDeResultado.add(Resposta.OK.toString());
 		}
-
 		// USAR MURAL
 		else if (tipoComando.equals(Comando.USAR_MURAL.toString())) {
 			if (tipoComando.equals(Comando.USAR_MURAL.toString())) {
@@ -235,12 +232,11 @@ public class Servidor {
 				listaDeResultado.add(Resposta.MENSAGEM_INVALIDA.toString());
 				return listaDeResultado;
 			}
-			// cria o anuncio
 			// > postar-anuncio <mensagem>[1]
-			String mensagem = comando.split(" ", 2)[1];
+			String mensagem = comandoDividido[1];
 			Anuncio anuncio = new Anuncio(idPost, mensagem, usuarioLogado, null);
 			muralLogado.inserirPost(anuncio);// varaivel de mural atual
-			// database.inseriroPost(anuncio, mural);
+			// TODO: alteração para quando o servidor for executado em mysql
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
 
@@ -263,21 +259,19 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			// verifica o tamanho do comando
-			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
-			// 17:00[3] "Bloco I" [4]
-			String[] split = comando.split(" ", 5);
+			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2] 17:00[3] "Bloco I" [4]
 			// verifica se o comando possui o tamanho correto esperado
-			if (split.length < 5) {
+			if (comandoDividido.length < 5) {
 				listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
 				return listaDeResultado;
 			}
 			// cria o evento
 			// > postar-evento "Encontro dos Estudantes de Jandaia"[1] 08/11/2017[2]
 			// 17:00[3] "Bloco I" [4]
-			String mensagem = comando.split(" ", 2)[1];
-			String dataStr = comandoDividido[2];
-			String horaStr = comandoDividido[3];
-			String local = comandoDividido[4];
+			String mensagem = comando.split(" ", 2)[1]; //   ---> "Encontro dos Estudantes de Jandaia"
+			String dataStr = comandoDividido[2];		//----> 08/11/2017
+			String horaStr = comandoDividido[3];		// ----> 17:00
+			String local = comandoDividido[4];			// ----> "Bloco I"
 			LocalDateTime dataHora;
 			try {
 				dataHora = LocalDateTime.parse(dataStr + " " + horaStr,
@@ -287,10 +281,8 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			Evento evento = new Evento(idPost, mensagem, usuarioLogado, null, local, dataHora);
-			// se for execucao em InMemoryDataBase
-			muralLogado.inserirPost(evento); // adicionando o evento em usuarioLogado.getMuralAtual()
-			// se for execucao em MySQL
-			// database.inserirPost(evento, mural);
+			muralLogado.inserirPost(evento);
+			// alterar para quando for execucao em MySQL
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
 		}
@@ -317,6 +309,8 @@ public class Servidor {
 			return listaDeResultado;
 		}
 
+		
+
 		if (tipoComando.equals(Comando.EXCLUIR_POST.toString())) {
 			if (comandoDividido.length != 2) {
 				listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
@@ -333,7 +327,7 @@ public class Servidor {
 				return listaDeResultado;
 			}
 			// pegando o id que foi passado para exlcuir
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			if (muralLogado.getPost(idPost) == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
 			}
@@ -349,14 +343,17 @@ public class Servidor {
 					listaDeResultado.add(Resposta.OK.toString());
 				}
 			}
-			// resticao de exclusao
+			// restricao de exclusao
 			if (muralLogado.getPost(idPost) != null) {
 				if (muralLogado.getPost(idPost).getUsuarioCriador() != usuarioLogado
 						|| muralLogado.getPost(idPost).getUsuarioCriador() != usuarioAdmin) {
 					listaDeResultado.add(Resposta.NAO_AUTORIZADO.toString());
 				}
 			}
+			
+			/* não precisa realizar alterações para caso a execucao seja em mysql*/
 		}
+		
 
 		if (tipoComando.equals(Comando.SALVAR_POST.toString())) {
 			if (comandoDividido.length != 2) {
@@ -394,7 +391,7 @@ public class Servidor {
 				listaDeResultado.add(Resposta.COMANDO_INVALIDO.toString());
 				return listaDeResultado;
 			}
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			usuarioLogado.excluirPostSalvo(post);
 			listaDeResultado.add(Resposta.OK.toString());
@@ -406,7 +403,7 @@ public class Servidor {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			if (post == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
@@ -450,7 +447,7 @@ public class Servidor {
 		}
 
 		if (tipoComando.equals(Comando.LISTAR_REACOES.toString())) {
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			List<Reacao> reacoes = post.listReacoes();
 			for (Reacao reacao : reacoes) {
@@ -464,7 +461,7 @@ public class Servidor {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			Reacao reacao = post.getReacaoDoUsuario(usuarioLogado);
 			if (reacao != null) {
@@ -475,7 +472,7 @@ public class Servidor {
 		}
 
 		if (tipoComando.equals(Comando.LISTAR_CURTIDAS.toString())) {
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			if (post == null) {
 				listaDeResultado.add(Resposta.NADA_A_MOSTRAR.toString());
@@ -496,7 +493,7 @@ public class Servidor {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			Integer idEvento = Integer.parseInt(comando.split(" ")[1]);
+			Integer idEvento = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idEvento);
 			if (!(post instanceof Evento)) {
 				listaDeResultado.add(Resposta.NAO_EH_UM_EVENTO.toString());
@@ -512,7 +509,7 @@ public class Servidor {
 		}
 
 		if (tipoComando.equals(Comando.LISTAR_PARTICIPANTES.toString())) {
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 			if (!(post instanceof Evento)) {
 				listaDeResultado.add(Resposta.NAO_EH_UM_EVENTO.toString());
@@ -534,7 +531,7 @@ public class Servidor {
 		}
 
 		if (tipoComando.equals(Comando.DESCONFIRMAR_PRESENCA.toString())) {
-			Integer idEvento = Integer.parseInt(comando.split(" ")[1]);
+			Integer idEvento = Integer.parseInt(comandoDividido[1]);
 			Evento evento = (Evento) muralLogado.getPost(idEvento);
 			if (evento == null) {
 				listaDeResultado.add(Resposta.EVENTO_NAO_ENCONTRADO.toString());
@@ -553,10 +550,9 @@ public class Servidor {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			String[] parametros = comando.split(" ");
-			Integer idPost = Integer.parseInt(parametros[1]);
-			String data = parametros[2];
-			String hora = parametros[3];
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
+			String data = comandoDividido[2];
+			String hora = comandoDividido[3];
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			Date dataHora = null;
 			try {
@@ -605,9 +601,8 @@ public class Servidor {
 				return listaDeResultado;
 			}
 
-			String[] parametros = comando.split(" ", 3); // limita o split para no máximo 3 substrings
-			Integer idPost = Integer.parseInt(parametros[1]);
-			String mensagem = parametros[2];
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
+			String mensagem = comandoDividido[2];
 
 			Post post = muralLogado.getPost(idPost);
 			if (post == null) {
@@ -622,7 +617,7 @@ public class Servidor {
 		}
 
 		if (tipoComando.equals(Comando.LISTAR_COMENTARIOS.toString())) {
-			Integer idPost = Integer.parseInt(comando.split(" ")[1]);
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 
 			if (post == null) {
@@ -642,43 +637,27 @@ public class Servidor {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			String[] parametros = comando.split(" ");
-
-			Integer idPost = Integer.parseInt(parametros[1]);
-
-			Integer idComentario = Integer.parseInt(parametros[2]);
-
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
+			Integer idComentario = Integer.parseInt(comandoDividido[2]);
 			Post post = muralLogado.getPost(idPost);
-			/*
-			 * if (post == null) {
-			 * listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString()); return
-			 * listaDeResultado; }
-			 */
-			/*
-			 * Comentario comentario = post.getCometario(idComentario);
-			 * 
-			 * /* if (comentario == null) {
-			 * listaDeResultado.add(Resposta.COMENTARIO_NAO_EXISTE.toString()); return
-			 * listaDeResultado; }
-			 * 
-			 * if (!comentario.getUsuarioComent().equals(usuarioLogado)) {
-			 * listaDeResultado.add(Resposta.COMENTARIO_NAO_CRIADO_PELO_USUARIO_LOGADO.
-			 * toString()); return listaDeResultado; }
-			 */
 			post.removerComentario(idComentario);
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
+			
+			/* TODO: Adicionar verificacoes extras como COMENTARIO_NAO_ENCONTRADO*/
 		}
 
+		
+		
 		if (tipoComando.equals(Comando.SUGERIR_POST.toString())) {
 			if (usuarioLogado == null) {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
 
-			String[] parametros = comando.split(" ");
-			Integer idPost = Integer.parseInt(parametros[1]);
-			String nomeUsuarioReceptor = parametros[2];
+
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
+			String nomeUsuarioReceptor = comandoDividido[2];
 
 			Post post = muralLogado.getPost(idPost);
 			if (post == null) {
@@ -699,13 +678,16 @@ public class Servidor {
 			listaDeResultado.add(Resposta.OK.toString());
 			return listaDeResultado;
 		}
-
+		
+		
+		
+		/* LISTAR AS SUGESTOES RECEBIDAS */
 		if (tipoComando.equals(Comando.LISTAR_SUGESTOES.toString())) {
 			if (usuarioLogado == null) {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
-			String nomeUsuario = comando.split(" ")[1];
+			String nomeUsuario = comandoDividido[1];
 			Usuario usuario = database.getUsuario(nomeUsuario);
 			usuarioLogado.getSugestoesRecebidas();
 			for (Sugestao sugestao : usuario.getSugestoesRecebidas()) {
@@ -716,13 +698,16 @@ public class Servidor {
 
 		}
 
+		
+		
+		/* LISTAR AS SUGESTOES FEITAS */
 		if (tipoComando.equals(Comando.LISTAR_SUGERIDOS.toString())) {
 			if (usuarioLogado == null) {
 				listaDeResultado.add(Resposta.USUARIO_NAO_LOGADO.toString());
 				return listaDeResultado;
 			}
 
-			String nomeUsuario = comando.split(" ")[1];
+			String nomeUsuario = comandoDividido[1];
 			Usuario usuario = database.getUsuario(nomeUsuario);
 			if (usuario == null) {
 				listaDeResultado.add(Resposta.USUARIO_NAO_ENCONTRADO.toString());
@@ -730,29 +715,34 @@ public class Servidor {
 			}
 			List<Sugestao> sugestoesFeitas = usuario.getSugestoesFeitas();
 
-			// talvez implementar o StringBuilder dentro do metodo sugestoesFeitas
-			StringBuilder resposta = new StringBuilder();
+			// talvez implementar essa resposta dentro da classe lembrete 
+			String sugeridos = "";
 			for (Sugestao sugestao : sugestoesFeitas) {
-				resposta.append(sugestao.getUsuarioSugerido() + ": ").append("id_" + sugestao.getPost().getId())
-						.append(" anuncio ").append(sugestao.getPost().getUsuarioCriador() + " ")
-						.append(sugestao.getPost().getTexto());
+			    sugeridos += sugestao.getUsuarioSugerido() + ": " + "id_" + sugestao.getPost().getId() +
+			        " anuncio " + sugestao.getPost().getUsuarioCriador() + " " +
+			        sugestao.getPost().getTexto();
 			}
 
-			listaDeResultado.add(resposta.toString());
+			listaDeResultado.add(sugeridos.toString());
 			return listaDeResultado;
 		}
 
+		
+		/* LISTAR TODAS AS SUGESTOES DE UM POST */
 		if (tipoComando.equals(Comando.LISTAR_SUGESTOES_POST.toString())) {
-			String[] parametros = comando.split(" ");
-			Integer idPost = Integer.parseInt(parametros[1]);
+		
+			Integer idPost = Integer.parseInt(comandoDividido[1]);
 			Post post = muralLogado.getPost(idPost);
 
 			if (post == null) {
 				listaDeResultado.add(Resposta.POST_NAO_ENCONTRADO.toString());
 				return listaDeResultado;
 			}
-
+			
+			//criei essa lista para adicionar os elementos dentro dela e depois conseguir usar o collections reverse nela, que também me permite adicioanr a lista
+			//inversa dentro da lista de resultados.
 			List<String> listaReversa = new ArrayList<>();
+			//busca todas as sugestões recebidas pelos usuários
 			for (Usuario usuario : database.listUsuarios()) {
 				for (Sugestao sugestao : usuario.getSugestoesRecebidas()) {
 					if (sugestao.getPost().equals(post)) {
