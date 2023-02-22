@@ -112,22 +112,8 @@ public abstract class Post {
 	    }
 	}
 	
-	/*
-	public Comentario getCometario(Integer idComentario) {
-	    System.out.println("Buscando comentario com ID: " + idComentario);
-	    for (Comentario comentario : this.comentarios) {
-	        if (comentario.getIdComent().equals(idComentario)) {
-	            return comentario;
-	        }
-	    }
-	    return null;
-	}*/
-	
 	@Override
 	public String toString() {
 		return super.toString();
 	}
-
-
-
 }
